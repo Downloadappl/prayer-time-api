@@ -40,6 +40,15 @@ type PrayerTimesType = {
   Isha: string
 }
 
+// دالة لتحويل الوقت من تنسيق 24 ساعة إلى 12 ساعة مع AM/PM
+function convertTo12HourFormat(time: string): string {
+  const [hours, minutes] = time.split(':').map(Number)
+  const period = hours >= 12 ? 'PM' : 'AM'
+  const hours12 = hours % 12 || 12 // تحويل الساعة من 24 إلى 12
+  const minutesFormatted = minutes < 10 ? `0${minutes}` : minutes
+  return `${hours12}:${minutesFormatted} ${period}`
+}
+
 function App() {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -78,8 +87,16 @@ function App() {
           hijri: { day, month: month.number, weekday, year },
         })
 
+        // تحويل أوقات الصلاة إلى تنسيق 12 ساعة
         const { Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha } = data.timings
-        setPrayerTimes({ Fajr, Sunrise, Dhuhr, Asr, Maghrib, Isha })
+        setPrayerTimes({
+          Fajr: convertTo12HourFormat(Fajr),
+          Sunrise: convertTo12HourFormat(Sunrise),
+          Dhuhr: convertTo12HourFormat(Dhuhr),
+          Asr: convertTo12HourFormat(Asr),
+          Maghrib: convertTo12HourFormat(Maghrib),
+          Isha: convertTo12HourFormat(Isha),
+        })
 
         const { latitude, longitude, timezone } = data.meta
         searchLocationName(latitude, longitude, timezone)
@@ -138,7 +155,7 @@ function App() {
             </li>
             <li>
               <form onSubmit={handleSubmit}>
-              <Input inputRef={inputRef} />
+                <Input inputRef={inputRef} />
               </form>
             </li>
           </ul>
