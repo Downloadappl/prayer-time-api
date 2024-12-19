@@ -40,13 +40,12 @@ type PrayerTimesType = {
   Isha: string
 }
 
-// دالة لتحويل الوقت من تنسيق 24 ساعة إلى 12 ساعة مع AM/PM
+// دالة لتحويل الوقت من تنسيق 24 ساعة إلى 12 ساعة بدون AM/PM
 function convertTo12HourFormat(time: string): string {
   const [hours, minutes] = time.split(':').map(Number)
-  const period = hours >= 12 ? 'PM' : 'AM'
   const hours12 = hours % 12 || 12 // تحويل الساعة من 24 إلى 12
   const minutesFormatted = minutes < 10 ? `0${minutes}` : minutes
-  return `${hours12}:${minutesFormatted} ${period}`
+  return `${hours12}:${minutesFormatted}`
 }
 
 function App() {
