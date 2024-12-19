@@ -43,6 +43,11 @@ export default function PrayerTimes({ prayerTimes }: PrayerTimesType) {
     }`
   }
 
+  // تصفية صلاتي العصر والعشاء فقط
+  const filteredPrayerTimes = Object.entries(prayerTimes).filter(
+    ([prayer]) => prayer !== 'Asr' && prayer !== 'Isha'
+  )
+
   return (
     <motion.ul
       variants={prayerListContainerVariants}
@@ -50,7 +55,7 @@ export default function PrayerTimes({ prayerTimes }: PrayerTimesType) {
       animate='animate'
       className='flex flex-col items-stretch max-w-md w-full gap-3 overflow-hidden'
     >
-      {Object.entries(prayerTimes).map((prayer) => {
+      {filteredPrayerTimes.map((prayer) => {
         return (
           <motion.li
             variants={prayerVariant}
